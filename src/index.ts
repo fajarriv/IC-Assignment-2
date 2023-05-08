@@ -1,18 +1,24 @@
 import express, { Express, Request, Response } from "express";
 import morgan from "morgan";
-import { v4 as uuidv4 } from "uuid";
+import cors from "cors";
+import expenseRouter from "./routes/expense";
 
-console.log(uuidv4());
+// console.log(uuidv4());
 const app: Express = express();
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(morgan('tiny'))
+app.use(morgan("tiny"));
+app.use(cors());
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-app.listen(port, () => {
+app.listen(port, (): void => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+// Routing
+app.use("/expense", expenseRouter);

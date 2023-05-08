@@ -1,7 +1,6 @@
-import { ExpenseDto } from "dto/expense.dto";
-import { Expense } from "models/expenses";
+import { Expense } from "../models/expenses";
 
-const expenses: Expense[] = [
+const expenseData: Expense[] = [
   {
     id: "fa8337a7-a4b7-4257-a322-9d51473d9fc3",
     name: "Party",
@@ -67,4 +66,4 @@ const expenses: Expense[] = [
   },
 ];
 
-export default expenses;
+export default expenseData;

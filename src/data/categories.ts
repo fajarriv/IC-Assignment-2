@@ -1,4 +1,4 @@
-import { Category } from "models/categories";
+import { Category } from "../models/categories.js";
 
 const categoriesData: Category[] = [
   { id: "fa8337a7-a4b7-4257-a322-9d51473d9fc4", name: "Personal Expenses" },

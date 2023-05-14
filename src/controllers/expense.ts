@@ -1,4 +1,4 @@
-import { Expense, expenseSchema } from "../models/expenses";
+import { Expense } from "../models/expenses";
 import categoriesData from "../data/categories";
 import expensesData from "../data/expenses";
 import { Request, Response } from "express";
@@ -7,7 +7,27 @@ import { ExpenseResponse } from "../dto/expenseResponse.dto";
 
 // get all expense
 export const getAllExpense = (req: Request, res: Response) => {
-  const data: ExpenseResponse[] = expensesData.map(
+  const { category_id, min_price, max_price } = req.query;
+
+  let filteredExpense: Expense[] = expensesData;
+  if (category_id) {
+    const categoryFilter = category_id.toString().split(",");
+    filteredExpense = filteredExpense.filter((expense) =>
+      categoryFilter.includes(expense.category.id)
+    );
+  }
+  if (min_price) {
+    filteredExpense = filteredExpense.filter(
+      (expense) => expense.amount >= parseInt(min_price.toString())
+    );
+  }
+  if (max_price) {
+    filteredExpense = filteredExpense.filter(
+      (expense) => expense.amount <= parseInt(max_price.toString())
+    );
+  }
+
+  const data: ExpenseResponse[] = filteredExpense.map(
     ({ id, category, name, amount }) => {
       return {
         id: id,
@@ -72,7 +92,7 @@ export const updateExpenseById = (req: Request, res: Response) => {
     id: id,
     name: name,
     amount: amount,
-    category: categoryObj!
+    category: categoryObj!,
   };
   res.json(expensesData[expenseIndex]);
 };

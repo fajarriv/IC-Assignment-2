@@ -16,10 +16,10 @@ export const validateExpenseParams = (
     if (!expense) {
       res.status(404).send(`Expense with id "${id}" not found!`);
     }
+    next();
   } catch (error) {
     if (error instanceof z.ZodError) {
       res.status(400).json(error.issues);
     }
   }
-  next();
 };

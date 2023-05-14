@@ -5,7 +5,7 @@ import { expenseRequestSchema } from "../dto/expenseRequest.dto";
 
 const reqSchema = z.object({ body: expenseRequestSchema });
 
-const validateExpenseBody = (
+export const validateExpenseBody = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -15,7 +15,6 @@ const validateExpenseBody = (
     if (!name || !category || !amount) {
       return res.status(400).json({ error: "Invalid request body" });
     }
-
     reqSchema.parse(req);
 
     const categoryObj = categoriesData.find(
@@ -26,12 +25,11 @@ const validateExpenseBody = (
     if (!categoryObj) {
       return res.status(404).send(`Category id with id ${category} not found`);
     }
+    next();
   } catch (error) {
     if (error instanceof z.ZodError) {
       res.status(400).json(error.issues);
     }
   }
-  next();
 };
 
-export default validateExpenseBody;
